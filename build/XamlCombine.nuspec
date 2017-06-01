@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>XamlCombine</id>
+        <version>$Version$-alpha</version>
+        <title>XamlCombine</title>
+        <description>XamlCombine</description>
+        <summary />
+        <releaseNotes />
+        <authors>jan-schubert</authors>
+        <licenseUrl>https://github.com/jan-schubert/XamlCombine/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/jan-schubert/XamlCombine/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <tags>XamlCombine XAML WPF</tags>
+    </metadata>
+    <files>
+      <file src="XamlCombine.props" target="build" />
+      <file src="../src/XamlCombine/bin/$Configuration$/XamlCombine.dll" target="build" />
+    </files>
+</package>
