@@ -5,7 +5,7 @@ configuration: Release
 
 # Install scripts. (runs after repo cloning)
 install:
-  - nuget restore
+  - nuget restore src\XamlCombine.sln
 
 build:
   verbosity: minimal
@@ -21,6 +21,13 @@ assembly_info:
   assembly_informational_version: "{version}"
 
 artifacts:
-  - path: build/bin
-    name: XamlCombine $(appveyor_build_version)
-    type: zip
+  - path: '**\XamlCombine*.nupkg'
+    name: XamlCombine.nupkg
+
+deploy:
+  provider: NuGet
+  symbol_server: https://ci.appveyor.com/nuget/jan-schubert/api/v2/package
+  api_key:
+    secure: EEzMZXyGYmDBGcZfcOsS1QB+8iHT760Kg/ML6l0jHL+wxqMaZYqWSztF0VlpyBCL
+  skip_symbols: true
+  artifact: /XamlCombine\..*\.nupkg/
