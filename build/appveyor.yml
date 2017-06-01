@@ -10,6 +10,9 @@ install:
 build:
   verbosity: minimal
 
+after_build:
+  - cmd: nuget pack build/XamlCombine.nuspec -Properties Configuration=%configuration% -Version %appveyor_build_version% -NoDefaultExcludes
+  
 assembly_info:
   patch: true
   file: AssemblyInfo.*
