@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlCombine", "Source\XamlCombine\XamlCombine.csproj", "{D33D75C4-AA91-4253-8CC0-00971EBF3D5B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{A8D862CD-8367-4523-8920-2576C08F34A1}"
 	ProjectSection(SolutionItems) = preProject
 		build\appveyor.yml = build\appveyor.yml
@@ -12,16 +10,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{A8D862CD
 		build\XamlCombine.props = build\XamlCombine.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlCombine.Test", "Source\XamlCombine.Test\XamlCombine.Test.csproj", "{549A8CA1-E2E7-4744-8C1F-468EFDDDF1EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlCombine", "Source\XamlCombine\XamlCombine.csproj", "{9279A6B8-DFBA-4B7D-8942-574CED157C07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D33D75C4-AA91-4253-8CC0-00971EBF3D5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D33D75C4-AA91-4253-8CC0-00971EBF3D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D33D75C4-AA91-4253-8CC0-00971EBF3D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D33D75C4-AA91-4253-8CC0-00971EBF3D5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{549A8CA1-E2E7-4744-8C1F-468EFDDDF1EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{549A8CA1-E2E7-4744-8C1F-468EFDDDF1EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{549A8CA1-E2E7-4744-8C1F-468EFDDDF1EB}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{549A8CA1-E2E7-4744-8C1F-468EFDDDF1EB}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{9279A6B8-DFBA-4B7D-8942-574CED157C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9279A6B8-DFBA-4B7D-8942-574CED157C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9279A6B8-DFBA-4B7D-8942-574CED157C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9279A6B8-DFBA-4B7D-8942-574CED157C07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

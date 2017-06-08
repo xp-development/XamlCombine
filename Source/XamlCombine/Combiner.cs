@@ -191,7 +191,7 @@ namespace XamlCombine
       filePath = Path.Combine(_appPath.Value, filePath);
 
       if (File.Exists(filePath) == false)
-        throw new FileNotFoundException("Unable to find file.", file);
+        throw new FileNotFoundException($"Unable to find file '{file}'.", file);
 
       return filePath;
     }
