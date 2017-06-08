@@ -10,8 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{A8D862CD
 		build\XamlCombine.props = build\XamlCombine.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlCombine.Test", "Source\XamlCombine.Test\XamlCombine.Test.csproj", "{549A8CA1-E2E7-4744-8C1F-468EFDDDF1EB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlCombine", "Source\XamlCombine\XamlCombine.csproj", "{9279A6B8-DFBA-4B7D-8942-574CED157C07}"
 EndProject
 Global
@@ -20,10 +18,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{549A8CA1-E2E7-4744-8C1F-468EFDDDF1EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{549A8CA1-E2E7-4744-8C1F-468EFDDDF1EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{549A8CA1-E2E7-4744-8C1F-468EFDDDF1EB}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{549A8CA1-E2E7-4744-8C1F-468EFDDDF1EB}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{9279A6B8-DFBA-4B7D-8942-574CED157C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9279A6B8-DFBA-4B7D-8942-574CED157C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9279A6B8-DFBA-4B7D-8942-574CED157C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
