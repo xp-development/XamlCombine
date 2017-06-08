@@ -11,6 +11,7 @@
         <licenseUrl>https://github.com/jan-schubert/XamlCombine/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/jan-schubert/XamlCombine/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<developmentDependency>true</developmentDependency>
         <tags>XamlCombine XAML WPF</tags>
     </metadata>
     <files>

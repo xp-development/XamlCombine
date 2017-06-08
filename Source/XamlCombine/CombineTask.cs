@@ -4,8 +4,8 @@ namespace XamlCombine
 {
   public class CombineTask : Task
   {
-    public string SourcePath { get; set; } = "Generic.txt";
-    public string TargetPath { get; set; } = "Generic.xaml";
+    public string SourcePath { get; set; }
+    public string TargetPath { get; set; }
 
     public override bool Execute()
     {
