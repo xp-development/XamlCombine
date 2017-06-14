@@ -291,7 +291,7 @@ namespace XamlCombine
       }
       catch (Exception e)
       {
-        throw new Exception("Error during Resource Dictionary saving: {0}", e);
+        throw new Exception($"Error during Resource Dictionary saving: {e}");
       }
     }
   }

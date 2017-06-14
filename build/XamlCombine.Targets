@@ -8,6 +8,6 @@
     <XamlCombineLib Condition="!Exists('$(MSBuildXamlCombinePath)')">XamlCombine.dll</XamlCombineLib>
   </PropertyGroup>
 
-  <UsingTask AssemblyFile="$(XamlCombineLib)" TaskName="MSBuild.Community.Tasks.Combine" />
+  <UsingTask AssemblyFile="$(XamlCombineLib)" TaskName="XamlCombine.Combine" />
 
 </Project>

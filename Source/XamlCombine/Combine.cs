@@ -2,7 +2,7 @@
 
 namespace XamlCombine
 {
-  public class CombineTask : Task
+  public class Combine : Task
   {
     public string SourcePath { get; set; }
     public string TargetPath { get; set; }
