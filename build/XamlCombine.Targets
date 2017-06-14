@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <MSBuildXamlCombinePath Condition="'$(MSBuildXamlCombinePath)' == '' and '$(MSBuildThisFile)' == 'XamlCombine.Targets'">$(MSBuildThisFileDirectory)\..\tools</MSBuildXamlCombinePath>
+    <XamlCombineLib Condition="'$(OS)' == 'Windows_NT'">$([MSBUILD]::Unescape($(MSBuildXamlCombinePath)\XamlCombine.dll))</XamlCombineLib>
+    <XamlCombineLib Condition="'$(OS)' != 'Windows_NT'">$(MSBuildXamlCombinePath)\XamlCombine.dll</XamlCombineLib>
+    <XamlCombineLib Condition="!Exists('$(MSBuildXamlCombinePath)')">XamlCombine.dll</XamlCombineLib>
+  </PropertyGroup>
+
+  <UsingTask AssemblyFile="$(XamlCombineLib)" TaskName="MSBuild.Community.Tasks.Combine" />
+
+</Project>

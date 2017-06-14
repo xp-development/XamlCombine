@@ -16,6 +16,7 @@
     </metadata>
     <files>
       <file src="XamlCombine.props" target="build" />
-      <file src="../Source/XamlCombine/bin/$Configuration$/XamlCombine.dll" target="build" />
+      <file src="../Source/XamlCombine/bin/$Configuration$/XamlCombine.dll" target="tools" />
+      <file src="../build/XamlCombine.Targets" target="build" />
     </files>
 </package>
