@@ -1,4 +1,6 @@
-﻿using Microsoft.Build.Utilities;
+﻿using System;
+using System.IO;
+using Microsoft.Build.Utilities;
 
 namespace XamlCombine
 {
@@ -9,9 +11,18 @@ namespace XamlCombine
 
     public override bool Execute()
     {
-      var combiner = new Combiner(Log);
-      combiner.Combine(SourcePath, TargetPath);
-      return Log.HasLoggedErrors;
+      try
+      { 
+        var path = Path.GetDirectoryName(BuildEngine.ProjectFileOfTaskNode);
+        var combiner = new Combiner();
+        combiner.Combine(Path.Combine(path, SourcePath), Path.Combine(path, TargetPath));
+        return true;
+      }
+      catch (Exception exception)
+      {
+        Log.LogErrorFromException(exception);
+        return false;
+      }
     }
   }
 }
