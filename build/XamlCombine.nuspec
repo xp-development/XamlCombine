@@ -14,7 +14,6 @@
 		<developmentDependency>true</developmentDependency>
         <tags>XamlCombine XAML WPF</tags>
 		<language>en-US</language>
-		<developmentDependency>true</developmentDependency>
     </metadata>
     <files>
       <file src="../Source/XamlCombine/bin/$Configuration$/XamlCombine.dll" target="tools" />
