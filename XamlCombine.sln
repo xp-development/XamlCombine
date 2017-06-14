@@ -7,7 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{A8D862CD
 	ProjectSection(SolutionItems) = preProject
 		build\appveyor.yml = build\appveyor.yml
 		build\XamlCombine.nuspec = build\XamlCombine.nuspec
-		build\XamlCombine.props = build\XamlCombine.props
 		build\XamlCombine.Targets = build\XamlCombine.Targets
 	EndProjectSection
 EndProject
