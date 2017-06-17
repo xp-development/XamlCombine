@@ -18,4 +18,4 @@ Generic.txt contains a list of XAML filenames
 
 Special thanks
 ===========
-The original code was writting by [SableRaven](https://www.codeplex.com/site/users/view/SableRaven) and was copied from [xamlcombine.codeplex.com](https://xamlcombine.codeplex.com/). It was ported to [github](https://github.com/fluentribbon/XamlCombine) by [batzen](https://github.com/batzen)
+The original code was writting by [SableRaven](https://www.codeplex.com/site/users/view/SableRaven) and was copied from [xamlcombine.codeplex.com](https://xamlcombine.codeplex.com/). It was ported to [github](https://github.com/fluentribbon/XamlCombine) by [batzen](https://github.com/batzen).
