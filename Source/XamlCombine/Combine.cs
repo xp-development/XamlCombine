@@ -12,10 +12,10 @@ namespace XamlCombine
     public override bool Execute()
     {
       try
-      { 
+      {
         var path = Path.GetDirectoryName(BuildEngine.ProjectFileOfTaskNode);
         var combiner = new Combiner();
-        combiner.Combine(Path.Combine(path, SourcePath), Path.Combine(path, TargetPath));
+        combiner.Combine(path);
         return true;
       }
       catch (Exception exception)

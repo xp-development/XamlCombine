@@ -4,169 +4,179 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace XamlCombine
 {
   public class Combiner
   {
-    /// <summary>
-    ///   Dynamic resource string.
-    /// </summary>
     private const string DynamicResourceString = "{DynamicResource ";
-
-    /// <summary>
-    ///   Static resource string.
-    /// </summary>
     private const string StaticResourceString = "{StaticResource ";
 
-    /// <summary>
-    ///   Combines multiple XAML resource dictionaries in one.
-    /// </summary>
-    /// <param name="sourceFile">Filename of list of XAML's.</param>
-    /// <param name="resultFile">Result XAML filename.</param>
-    public void Combine(string sourceFile, string resultFile)
+    public void Combine(string sourceFile)
     {
-      sourceFile = GetFilePath(sourceFile);
-      var resources = File.ReadAllLines(sourceFile);
-
-      var finalDocument = new XmlDocument();
-      var rootNode = finalDocument.CreateElement("ResourceDictionary",
-        "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
-      finalDocument.AppendChild(rootNode);
-
-      var keys = new List<string>();
-      var resourceElements = new Dictionary<string, ResourceElement>();
-      var resourcesList = new List<ResourceElement>();
-
-      foreach (var resource in resources)
+      var configuration = XElement.Load(Path.Combine(sourceFile, "XamlCombine.config"));
+      foreach (var child in configuration.Elements())
       {
-        var current = new XmlDocument();
-        current.Load(GetFilePath(resource));
-
-        var root = current.DocumentElement;
-        if (root == null)
-          continue;
-
-        for (var j = 0; j < root.Attributes.Count; j++)
+        if (child.Attribute("Output") == null)
         {
-          var attr = root.Attributes[j];
-          if (rootNode.HasAttribute(attr.Name))
+          throw new Exception("Theme need a OutputPath.");
+        }
+
+        var outputPath = Path.Combine(sourceFile, child.Attribute("Output").Value);
+        var files = new List<string>();
+        foreach (var resource in child.Elements("File").Select(x => x.Value))
+        {
+          if (File.Exists(resource))
           {
-            if (attr.Value == rootNode.Attributes[attr.Name].Value || attr.Prefix != "xmlns")
-              continue;
+            files.Add(Path.Combine(sourceFile, resource));
+          }
+        }
 
-            const int index = 0;
-            string name;
-            do
-            {
-              name = attr.LocalName + "_" + index.ToString(CultureInfo.InvariantCulture);
-            } while (rootNode.HasAttribute("xmlns:" + name));
-
-            root.SetAttribute("xmlns:" + name, attr.Value);
-            ChangeNamespacePrefix(root, attr.LocalName, name);
-            var a = finalDocument.CreateAttribute("xmlns", name, attr.NamespaceURI);
-            a.Value = attr.Value;
-            rootNode.Attributes.Append(a);
+        foreach (var resource in child.Elements("Directory").Select(x => x.Value))
+        {
+          if (Directory.Exists(resource))
+          {
+            files.AddRange(Directory.GetFiles(Path.Combine(sourceFile, resource), "*.xaml", SearchOption.AllDirectories));
           }
           else
           {
-            var exists = false;
-            if (attr.Prefix == "xmlns")
-            {
-              foreach (XmlAttribute attribute in rootNode.Attributes)
-              {
-                if (attr.Value != attribute.Value)
-                  continue;
-
-                root.SetAttribute(attr.Name, attr.Value);
-                ChangeNamespacePrefix(root, attr.LocalName, attribute.LocalName);
-                exists = true;
-                break;
-              }
-            }
-
-            if (exists)
-              continue;
-
-            var a = finalDocument.CreateAttribute(attr.Prefix, attr.LocalName, attr.NamespaceURI);
-            a.Value = attr.Value;
-            rootNode.Attributes.Append(a);
+            throw new Exception($"Directory {resource} not found.");
           }
         }
 
-        foreach (XmlNode node in root.ChildNodes)
+        var finalDocument = new XmlDocument();
+        var rootNode = finalDocument.CreateElement("ResourceDictionary",
+          "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+        finalDocument.AppendChild(rootNode);
+
+        var keys = new List<string>();
+        var resourceElements = new Dictionary<string, ResourceElement>();
+        var resourcesList = new List<ResourceElement>();
+
+        foreach (var resource in files)
         {
-          if (!(node is XmlElement) || node.Name == "ResourceDictionary.MergedDictionaries")
+          var current = new XmlDocument();
+          if (!File.Exists(resource))
+            throw new Exception($"Resource {resource} not found.");
+
+          current.Load(resource);
+
+          var root = current.DocumentElement;
+          if (root == null)
             continue;
 
-          var importedElement = finalDocument.ImportNode(node, true) as XmlElement;
+          for (var j = 0; j < root.Attributes.Count; j++)
+          {
+            var attr = root.Attributes[j];
+            if (rootNode.HasAttribute(attr.Name))
+            {
+              if (attr.Value == rootNode.Attributes[attr.Name].Value || attr.Prefix != "xmlns")
+                continue;
 
-          var key = string.Empty;
-          if (importedElement.HasAttribute("Key"))
-            key = importedElement.Attributes["Key"].Value;
-          else if (importedElement.HasAttribute("x:Key"))
-            key = importedElement.Attributes["x:Key"].Value;
-          else if (importedElement.HasAttribute("TargetType"))
-            key = importedElement.Attributes["TargetType"].Value;
+              const int index = 0;
+              string name;
+              do
+              {
+                name = attr.LocalName + "_" + index.ToString(CultureInfo.InvariantCulture);
+              } while (rootNode.HasAttribute("xmlns:" + name));
 
-          if (string.IsNullOrEmpty(key))
-            continue;
+              root.SetAttribute("xmlns:" + name, attr.Value);
+              ChangeNamespacePrefix(root, attr.LocalName, name);
+              var a = finalDocument.CreateAttribute("xmlns", name, attr.NamespaceURI);
+              a.Value = attr.Value;
+              rootNode.Attributes.Append(a);
+            }
+            else
+            {
+              var exists = false;
+              if (attr.Prefix == "xmlns")
+              {
+                foreach (XmlAttribute attribute in rootNode.Attributes)
+                {
+                  if (attr.Value != attribute.Value)
+                    continue;
 
-          if (keys.Contains(key))
-            continue;
+                  root.SetAttribute(attr.Name, attr.Value);
+                  ChangeNamespacePrefix(root, attr.LocalName, attribute.LocalName);
+                  exists = true;
+                  break;
+                }
+              }
 
-          keys.Add(key);
+              if (exists)
+                continue;
 
-          var res = new ResourceElement(key, importedElement, FillKeys(importedElement));
-          resourceElements.Add(key, res);
-          resourcesList.Add(res);
+              var a = finalDocument.CreateAttribute(attr.Prefix, attr.LocalName, attr.NamespaceURI);
+              a.Value = attr.Value;
+              rootNode.Attributes.Append(a);
+            }
+          }
+
+          foreach (XmlNode node in root.ChildNodes)
+          {
+            if (!(node is XmlElement) || node.Name == "ResourceDictionary.MergedDictionaries")
+              continue;
+
+            var importedElement = finalDocument.ImportNode(node, true) as XmlElement;
+
+            var key = string.Empty;
+            if (importedElement.HasAttribute("Key"))
+              key = importedElement.Attributes["Key"].Value;
+            else if (importedElement.HasAttribute("x:Key"))
+              key = importedElement.Attributes["x:Key"].Value;
+            else if (importedElement.HasAttribute("TargetType"))
+              key = importedElement.Attributes["TargetType"].Value;
+
+            if (string.IsNullOrEmpty(key))
+              continue;
+
+            if (keys.Contains(key))
+              continue;
+
+            keys.Add(key);
+
+            var res = new ResourceElement(key, importedElement, FillKeys(importedElement));
+            resourceElements.Add(key, res);
+            resourcesList.Add(res);
+          }
         }
-      }
 
-      var finalOrderList = new List<ResourceElement>();
+        var finalOrderList = new List<ResourceElement>();
 
-      for (var i = 0; i < resourcesList.Count; i++)
-      {
-        if (resourcesList[i].UsedKeys.Length != 0)
-          continue;
-
-        finalOrderList.Add(resourcesList[i]);
-        resourcesList.RemoveAt(i);
-        i--;
-      }
-
-      while (resourcesList.Count > 0)
-      {
         for (var i = 0; i < resourcesList.Count; i++)
         {
-          var containsAll = resourcesList[i].UsedKeys
-            .All(usedKey => !resourceElements.ContainsKey(usedKey) ||
-                            finalOrderList.Contains(resourceElements[usedKey]));
-
-
-          if (!containsAll)
+          if (resourcesList[i].UsedKeys.Length != 0)
             continue;
 
           finalOrderList.Add(resourcesList[i]);
           resourcesList.RemoveAt(i);
           i--;
         }
+
+        while (resourcesList.Count > 0)
+        {
+          for (var i = 0; i < resourcesList.Count; i++)
+          {
+            var containsAll = resourcesList[i].UsedKeys
+              .All(usedKey => !resourceElements.ContainsKey(usedKey) ||
+                              finalOrderList.Contains(resourceElements[usedKey]));
+
+
+            if (!containsAll)
+              continue;
+
+            finalOrderList.Add(resourcesList[i]);
+            resourcesList.RemoveAt(i);
+            i--;
+          }
+        }
+
+        foreach (var resourceElement in finalOrderList)
+          rootNode.AppendChild(resourceElement.Element);
+
+        WriteResultFile(outputPath, finalDocument);
       }
-
-      foreach (var resourceElement in finalOrderList)
-        rootNode.AppendChild(resourceElement.Element);
-
-      WriteResultFile(resultFile, finalDocument);
-    }
-
-    private static string GetFilePath(string file)
-    {
-      var filePath = file;
-
-      if (File.Exists(filePath) == false)
-        throw new FileNotFoundException($"Unable to find file '{file}'.", file);
-
-      return filePath;
     }
 
     /// <summary>
